@@ -22,26 +22,3 @@
       });
     });
 })();
-
-<html>
-      <head>
-        <title>Accueil Proxy</title>
-        <style>
-          body {
-            margin: 0;
-            height: 100vh;
-            background-color: #0D1C40;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: Arial, sans-serif;
-          }
-        </style>
-      </head>
-      <body>
-        <h1>Bienvenue sur mon serveur proxy</h1>
-      </body>
-    </html>
-  `);
-});
