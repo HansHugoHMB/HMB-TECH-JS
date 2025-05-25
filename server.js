@@ -15,7 +15,7 @@
         time: new Date().toLocaleString()
       };
       
-      fetch('https://tonsite.com/tracker.php', {
+      fetch('https://hmb-tech-php.onrender.com/tracker.php', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(payload)
