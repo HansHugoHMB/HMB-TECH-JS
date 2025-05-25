@@ -1,40 +1,50 @@
-// tracker.js
-(function(){
-  // Affichage d'un message d'accueil centré
-  const div = document.createElement('div');
-  div.textContent = 'Bienvenue ! Suivi en cours...';
-  div.style.position = 'fixed';
-  div.style.top = '50%';
-  div.style.left = '50%';
-  div.style.transform = 'translate(-50%, -50%)';
-  div.style.background = '#0D1C40';
-  div.style.color = 'white';
-  div.style.padding = '1em 2em';
-  div.style.borderRadius = '8px';
-  div.style.zIndex = '9999';
-  document.body.appendChild(div);
+(function () {
+  const showWelcome = () => {
+    const div = document.createElement('div');
+    div.innerText = "Bienvenue sur notre site !";
+    div.style.position = "fixed";
+    div.style.top = "50%";
+    div.style.left = "50%";
+    div.style.transform = "translate(-50%, -50%)";
+    div.style.backgroundColor = "#0D1C40";
+    div.style.color = "gold";
+    div.style.padding = "20px";
+    div.style.borderRadius = "10px";
+    div.style.fontFamily = "Arial, sans-serif";
+    div.style.zIndex = "9999";
+    document.body.appendChild(div);
 
-  setTimeout(() => div.remove(), 3000); // disparaît après 3 secondes
+    setTimeout(() => div.remove(), 5000);
+  };
 
-  fetch('https://ip-api.io/json')
-    .then(res => res.json())
-    .then(data => {
-      const payload = {
-        ip: data.ip,
-        country: data.country_name,
-        region: data.region_name,
-        city: data.city,
-        lat: data.latitude,
-        lon: data.longitude,
-        isp: data.isp,
-        ua: navigator.userAgent,
-        time: new Date().toLocaleString()
-      };
+  const sendVisit = (data) => {
+    const payload = {
+      ip: data.ip,
+      country: data.country_name,
+      region: data.region_name,
+      city: data.city,
+      lat: data.latitude,
+      lon: data.longitude,
+      isp: data.isp,
+      ua: navigator.userAgent,
+      time: new Date().toLocaleString()
+    };
 
-      fetch(`https://hmb-tech-php.onrender.com:3000/tracker.php`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload)
-      });
+    fetch('https://hmb-tech-php.onrender.com/tracker.php', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
     });
+  };
+
+  const trackVisitor = () => {
+    fetch('https://ip-api.io/json')
+      .then(res => res.json())
+      .then(data => {
+        sendVisit(data);
+        showWelcome();
+      });
+  };
+
+  trackVisitor();
 })();
