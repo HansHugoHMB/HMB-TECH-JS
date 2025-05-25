@@ -1,4 +1,6 @@
 const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
 const PORT = process.env.PORT || 3000;
 
@@ -30,11 +32,31 @@ const html = `
 `;
 
 const server = http.createServer((req, res) => {
-  if (req.method === 'GET' && req.url === '/') {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end(html);
-  }
+  // Gérer les différentes routes
+  if (req.method === 'GET') {
+    switch (req.url) {
+      case '/':
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(html);
+        break;
 
+      case '/tracker.js':
+        fs.readFile(path.join(__dirname, 'tracker.js'), (err, content) => {
+          if (err) {
+            res.writeHead(500);
+            res.end('Erreur interne du serveur');
+            return;
+          }
+          res.writeHead(200, { 'Content-Type': 'application/javascript' });
+          res.end(content);
+        });
+        break;
+
+      default:
+        res.writeHead(404);
+        res.end('404 Not Found');
+    }
+  }
   else if (req.method === 'POST' && req.url === '/tracker') {
     let body = '';
 
@@ -51,9 +73,8 @@ const server = http.createServer((req, res) => {
       }
     });
   }
-
   else {
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.writeHead(404);
     res.end('404 Not Found');
   }
 });
