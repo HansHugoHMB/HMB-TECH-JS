@@ -1,11 +1,29 @@
-const express = require('express');
-const request = require('request');
-const app = express();
+// tracker.js
+(function(){
+  fetch('https://ip-api.io/json')
+    .then(res => res.json())
+    .then(data => {
+      const payload = {
+        ip: data.ip,
+        country: data.country_name,
+        region: data.region_name,
+        city: data.city,
+        lat: data.latitude,
+        lon: data.longitude,
+        isp: data.isp,
+        ua: navigator.userAgent,
+        time: new Date().toLocaleString()
+      };
+      
+      fetch('https://tonsite.com/tracker.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+      });
+    });
+})();
 
-// Route d'accueil
-app.get('/', (req, res) => {
-  res.send(`
-    <html>
+<html>
       <head>
         <title>Accueil Proxy</title>
         <style>
@@ -27,14 +45,3 @@ app.get('/', (req, res) => {
     </html>
   `);
 });
-
-// Proxy
-app.use('/proxy', (req, res) => {
-  const url = req.query.url;
-  if (!url) return res.status(400).send('Erreur: paramètre url manquant.');
-
-  request({ url, headers: { Host: 'www.orange.cd' } }).pipe(res);
-});
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Serveur démarré sur le port ${port}`));
