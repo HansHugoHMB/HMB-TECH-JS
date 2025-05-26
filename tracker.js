@@ -18,32 +18,44 @@
   };
 
   const sendVisit = (data) => {
+    // Création du payload avec les noms de champs corrects
     const payload = {
       ip: data.ip,
-      country: data.country_name,
-      region: data.region_name,
+      country: data.country_name,    // Utilisation du bon nom de champ
+      region: data.region_name,      // Utilisation du bon nom de champ
       city: data.city,
-      lat: data.latitude,
-      lon: data.longitude,
+      lat: data.latitude,            // Utilisation du bon nom de champ
+      lon: data.longitude,           // Utilisation du bon nom de champ
       isp: data.isp,
       ua: navigator.userAgent,
       time: new Date().toLocaleString()
     };
 
+    // Ajout d'un console.log pour debug
+    console.log('Sending payload:', payload);
+
     fetch('https://hmb-tech-php.onrender.com/tracker.php', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
       body: JSON.stringify(payload)
-    });
+    })
+    .then(response => response.json())
+    .then(data => console.log('Response:', data))
+    .catch(error => console.error('Error:', error));
   };
 
   const trackVisitor = () => {
     fetch('https://ip-api.io/json')
       .then(res => res.json())
       .then(data => {
+        console.log('IP API Data:', data); // Debug log
         sendVisit(data);
         showWelcome();
-      });
+      })
+      .catch(error => console.error('Error fetching IP data:', error));
   };
 
   trackVisitor();
