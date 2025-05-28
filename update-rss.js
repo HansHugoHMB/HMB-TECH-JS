@@ -47,3 +47,5 @@ async function runEveryMinute() {
 }
 
 runEveryMinute();
+
+fs.writeFileSync('test-output.xml', updatedContent);
