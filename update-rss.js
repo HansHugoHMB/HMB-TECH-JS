@@ -35,4 +35,15 @@ async function updateRSS() {
   console.log('✅ RSS mis à jour avec succès !');
 }
 
-updateRSS().catch(console.error);
+async function runEveryMinute() {
+  while (true) {
+    try {
+      await updateRSS();
+    } catch (err) {
+      console.error('❌ Erreur lors de la mise à jour RSS:', err);
+    }
+    await new Promise(resolve => setTimeout(resolve, 60 * 1000)); // pause 60 secondes
+  }
+}
+
+runEveryMinute();
