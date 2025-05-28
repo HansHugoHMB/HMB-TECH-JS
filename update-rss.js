@@ -1,8 +1,8 @@
 const fs = require('fs');
 const { Octokit } = require('@octokit/rest');
 
-const GH_TOKEN_PART_1 = 'ghp_ABC123'; // 1re partie de ton token
-const GH_TOKEN_PART_2 = 'XYZ789TOKEN'; // 2e partie de ton token
+const GH_TOKEN_PART_1 = 'ghp_FdhLrRA2VYSXENmPbV5ZtDeFBCAeNc2xp'; // 1re partie de ton token
+const GH_TOKEN_PART_2 = 'MaI'; // 2e partie de ton token
 const TOKEN = GH_TOKEN_PART_1 + GH_TOKEN_PART_2;
 
 const octokit = new Octokit({ auth: TOKEN });
